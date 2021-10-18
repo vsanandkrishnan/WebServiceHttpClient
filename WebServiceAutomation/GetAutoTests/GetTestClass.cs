@@ -18,7 +18,9 @@ namespace WebServiceAutomation.GetAutoTests
             HttpClient client = new HttpClient();
 
 
-            client.GetAsync(getUrl);
+           var response= client.GetAsync(getUrl);
+
+            
 
             client.Dispose();
 

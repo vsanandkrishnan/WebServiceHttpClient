@@ -12,6 +12,7 @@ namespace WebServiceAutomation
         {
             HttpClient httpClient = new HttpClient();
             string url = @"https://reqres.in/api/users?page=2";
+
             httpClient.Dispose();
         }
     }
