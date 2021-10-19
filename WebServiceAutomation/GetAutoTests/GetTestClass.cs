@@ -13,17 +13,25 @@ namespace WebServiceAutomation.GetAutoTests
     {
         private string getUrl = @"https://reqres.in/api/users?page=2";
         [TestMethod]
-        public void GetMethod()
+        public void GetMethodwithUrl()
+        {
+           HttpClient client = new HttpClient();
+           var response= client.GetAsync(getUrl);
+           client.Dispose();
+        }
+
+        [TestMethod]
+        public void GetMethodwithUri()
         {
             HttpClient client = new HttpClient();
 
+            Uri getUri = new Uri(getUrl);
+            Task<HttpResponseMessage> httpResponse = client.GetAsync(getUri);
 
-           var response= client.GetAsync(getUrl);
+            HttpResponseMessage httpResponseMessage=httpResponse.Result;
 
-            
-
+            Console.WriteLine(httpResponseMessage.ToString());
             client.Dispose();
-
         }
     }
 }
