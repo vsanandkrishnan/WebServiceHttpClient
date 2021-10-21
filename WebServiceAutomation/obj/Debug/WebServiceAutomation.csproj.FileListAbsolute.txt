@@ -7,7 +7,6 @@ C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\WebServiceAutomation\bi
 C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\WebServiceAutomation\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
 C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\WebServiceAutomation\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
 C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\WebServiceAutomation\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
-C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\WebServiceAutomation\obj\Debug\WebServiceAutomation.csproj.AssemblyReference.cache
 C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\WebServiceAutomation\obj\Debug\WebServiceAutomation.csproj.CoreCompileInputs.cache
 C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\WebServiceAutomation\obj\Debug\WebServiceAutomation.csproj.CopyComplete
 C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\WebServiceAutomation\obj\Debug\WebServiceAutomation.dll
