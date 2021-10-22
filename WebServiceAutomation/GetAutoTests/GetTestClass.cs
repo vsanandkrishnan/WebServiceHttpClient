@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using WebServiceAutomation.Model;
 
 namespace WebServiceAutomation.GetAutoTests
 {
@@ -161,6 +162,13 @@ namespace WebServiceAutomation.GetAutoTests
                         string responseOut = response.Result;
 
                         Console.WriteLine(responseOut);
+
+                        RestResponse responseV = new RestResponse((int)statusCode, responseOut);
+
+                        string output=responseV.ToString();
+
+                        Console.WriteLine(output);
+
                     }
                 }
 
