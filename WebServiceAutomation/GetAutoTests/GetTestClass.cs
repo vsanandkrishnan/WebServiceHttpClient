@@ -136,6 +136,37 @@ namespace WebServiceAutomation.GetAutoTests
 
         }
 
+        [TestMethod]
+        public void TestUsingStatement()
+        {
+            using (HttpClient httpClient= new HttpClient())
+            {
+                using(HttpRequestMessage httpRequestMessage = new HttpRequestMessage())
+                {
+                    httpRequestMessage.RequestUri = new Uri(getUrl);
+                    httpRequestMessage.Method = HttpMethod.Get;
+                    httpRequestMessage.Headers.Add("Accept", "application/json");
+
+                    Task<HttpResponseMessage> httpResponseMessage = httpClient.SendAsync(httpRequestMessage);
+                    using (HttpResponseMessage httpResponse = httpResponseMessage.Result)
+                    {
+                        HttpStatusCode statusCode = httpResponse.StatusCode;
+
+                        Console.WriteLine((int)statusCode);
+
+                        HttpContent httpContent = httpResponse.Content;
+
+                        Task<string> response = httpContent.ReadAsStringAsync();
+
+                        string responseOut = response.Result;
+
+                        Console.WriteLine(responseOut);
+                    }
+                }
+
+            }
+        }
+
 
     }
 }
