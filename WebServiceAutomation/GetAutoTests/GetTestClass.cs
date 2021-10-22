@@ -111,6 +111,31 @@ namespace WebServiceAutomation.GetAutoTests
             client.Dispose();           
         }
 
+        [TestMethod]
+        public void TestSendAsyncMethod()
+        {
+            HttpRequestMessage httpRequestMessage = new HttpRequestMessage();
+            httpRequestMessage.RequestUri = new Uri(getUrl);
+            httpRequestMessage.Method = HttpMethod.Get;
+            httpRequestMessage.Headers.Add("Accept", "application/json");
+
+            HttpClient client = new HttpClient();
+            Task<HttpResponseMessage> httpResponseMessage=client.SendAsync(httpRequestMessage);
+
+            HttpResponseMessage httpResponse = httpResponseMessage.Result;
+            HttpStatusCode statusCode = httpResponse.StatusCode;
+
+            Console.WriteLine((int)statusCode);
+
+            HttpContent content = httpResponse.Content;
+            Task<string> responseData = content.ReadAsStringAsync();
+
+            string data = responseData.Result;
+
+            Console.WriteLine(data);
+
+        }
+
 
     }
 }
