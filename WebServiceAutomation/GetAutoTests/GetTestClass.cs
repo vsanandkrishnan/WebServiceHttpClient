@@ -148,7 +148,7 @@ namespace WebServiceAutomation.GetAutoTests
                 {
                     httpRequestMessage.RequestUri = new Uri(getUrl);
                     httpRequestMessage.Method = HttpMethod.Get;
-                    httpRequestMessage.Headers.Add("Accept", "application/json");
+                    httpRequestMessage.Headers.Add("Accept", "application/xml");
 
                     Task<HttpResponseMessage> httpResponseMessage = httpClient.SendAsync(httpRequestMessage);
                     using (HttpResponseMessage httpResponse = httpResponseMessage.Result)
@@ -209,15 +209,12 @@ namespace WebServiceAutomation.GetAutoTests
 
                         Console.WriteLine(output);
 
-                       List< ResponseV2Json> responseDesialized=JsonConvert.DeserializeObject<List<ResponseV2Json>>(responseV.ResponseData);
+                        List< ResponseV2Json> responseDesialized=JsonConvert.DeserializeObject<List<ResponseV2Json>>(responseV.ResponseData);
 
                         Console.WriteLine(responseDesialized[0].LaptopName);
-
                     }
                 }
-
             }
-
         }
 
 
