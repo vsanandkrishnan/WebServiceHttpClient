@@ -12,3 +12,6 @@ C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\WebServiceAutomation\ob
 C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\WebServiceAutomation\obj\Debug\WebServiceAutomation.dll
 C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\WebServiceAutomation\obj\Debug\WebServiceAutomation.pdb
 C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\WebServiceAutomation\obj\Debug\WebServiceAutomation.csproj.AssemblyReference.cache
+C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\WebServiceAutomation\bin\Debug\Json.Net.dll
+C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\WebServiceAutomation\bin\Debug\Newtonsoft.Json.dll
+C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\WebServiceAutomation\bin\Debug\Newtonsoft.Json.xml

@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using WebServiceAutomation.Model;
+using WebServiceAutomation.Model.JsonModel;
 
 namespace WebServiceAutomation.GetAutoTests
 {
@@ -173,6 +175,49 @@ namespace WebServiceAutomation.GetAutoTests
                 }
 
             }
+        }
+
+        [TestMethod]
+        public void TestUsingDeserializationOfJson()
+        {
+            using (HttpClient httpClient = new HttpClient())
+            {
+                using (HttpRequestMessage httpRequestMessage = new HttpRequestMessage())
+                {
+                    httpRequestMessage.RequestUri = new Uri(getUrl);
+                    httpRequestMessage.Method = HttpMethod.Get;
+                    httpRequestMessage.Headers.Add("Accept", "application/json");
+
+                    Task<HttpResponseMessage> httpResponseMessage = httpClient.SendAsync(httpRequestMessage);
+                    using (HttpResponseMessage httpResponse = httpResponseMessage.Result)
+                    {
+                        HttpStatusCode statusCode = httpResponse.StatusCode;
+
+                        Console.WriteLine((int)statusCode);
+
+                        HttpContent httpContent = httpResponse.Content;
+
+                        Task<string> response = httpContent.ReadAsStringAsync();
+
+                        string responseOut = response.Result;
+
+                        Console.WriteLine(responseOut);
+
+                        RestResponse responseV = new RestResponse((int)statusCode, responseOut);
+
+                        string output = responseV.ToString();
+
+                        Console.WriteLine(output);
+
+                       List< ResponseV2Json> responseDesialized=JsonConvert.DeserializeObject<List<ResponseV2Json>>(responseV.ResponseData);
+
+                        Console.WriteLine(responseDesialized[0].LaptopName);
+
+                    }
+                }
+
+            }
+
         }
 
 
