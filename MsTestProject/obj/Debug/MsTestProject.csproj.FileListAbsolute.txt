@@ -12,3 +12,6 @@ C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\MsTestProject\obj\Debug
 C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\MsTestProject\obj\Debug\MsTestProject.csproj.CopyComplete
 C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\MsTestProject\obj\Debug\MsTestProject.dll
 C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\MsTestProject\obj\Debug\MsTestProject.pdb
+C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\MsTestProject\bin\Debug\Json.Net.dll
+C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\MsTestProject\bin\Debug\Newtonsoft.Json.dll
+C:\Users\AnandKrishnan\source\repos\WebServiceAutomation\MsTestProject\bin\Debug\Newtonsoft.Json.xml
