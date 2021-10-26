@@ -215,6 +215,7 @@ namespace WebServiceAutomation.GetAutoTests
                         List< ResponseV2Json> responseDesialized=JsonConvert.DeserializeObject<List<ResponseV2Json>>(responseV.ResponseData);
 
                         Console.WriteLine(responseDesialized[0].LaptopName);
+
                     }
                 }
             }
@@ -261,9 +262,22 @@ namespace WebServiceAutomation.GetAutoTests
                         TextReader textReader = new StringReader(responseV.ResponseData);
 
                         //Step3
-                       LaptopDetails xmlData= (LaptopDetails)xmlSerializer.Deserialize(textReader);
+                        LaptopDetails xmlData= (LaptopDetails)xmlSerializer.Deserialize(textReader);
 
-                        Console.WriteLine(xmlData.Laptop.LaptopName);
+                        //1st checkpoint
+
+                        Assert.AreEqual(200, responseV.Statuscode);
+
+                        //2nd Checkpoint
+
+                       Assert.IsNotNull(responseV.ResponseData);
+
+
+                        //returns boolean value
+                        string feature = "8th Generation Intel® Core™ i5-8300H";
+                        var IsPresent = xmlData.Laptop.Features.Feature.Contains(feature);
+
+                        Assert.IsTrue(IsPresent, $"The features does not contain the feature {feature}");
                     }
                 }
             }
