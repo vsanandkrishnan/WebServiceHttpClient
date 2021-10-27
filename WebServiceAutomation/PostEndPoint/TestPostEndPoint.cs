@@ -16,7 +16,7 @@ namespace WebServiceAutomation.PostEndPoint
 
         private string postUrl = @"http://localhost:8080/laptop-bag/webapi/api/add";
         private RestResponse restResponse;
-        private static string MediaType = "applications/json";
+        private static string MediaType = "application/json";
         private Random random = new Random();
 
         [TestMethod]
@@ -28,9 +28,9 @@ namespace WebServiceAutomation.PostEndPoint
 
             int id = random.Next(1000);
             string jsonData = "{\"BrandName\":\"Alienware\",\"Features\":" +
-                "{\"Feature\":[\"8th Generation Intel\u00ae Core\u2122 i5-8300H\"," +
+                "{\"Feature\":[\"8th Generation Intelu00ae Coreu2122 i5-8300H\"," +
                 "\"Windows 10 Home 64-bit English\"," +
-                "\"NVIDIA\u00ae GeForce\u00ae GTX 1660 Ti 6GB GDDR6\"," +
+                "\"NVIDIAu00ae GeForceu00ae GTX 1660 Ti 6GB GDDR6\"," +
                 "\"8GB, 2x4GB, DDR4, 2666MHz\"]}," +
                 "\"Id\":"+id+",\"LaptopName\":\"Alienware M17\"}";
 
