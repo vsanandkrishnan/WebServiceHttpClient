@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using WebServiceAutomation.Model;
+using WebServiceAutomation.Model.JsonModel;
 
 namespace WebServiceAutomation.PostEndPoint
 {
@@ -15,8 +17,11 @@ namespace WebServiceAutomation.PostEndPoint
     {
 
         private string postUrl = @"http://localhost:8080/laptop-bag/webapi/api/add";
+        private string getUrl = @"http://localhost:8080/laptop-bag/webapi/api/find/";
         private RestResponse restResponse;
-        private static string MediaType = "application/json";
+        private RestResponse restResponseForGet;
+        private static string JsonMediaType = "application/json";
+        private static string XmlMediaType = "application/xml";
         private Random random = new Random();
 
         [TestMethod]
@@ -36,7 +41,8 @@ namespace WebServiceAutomation.PostEndPoint
 
             using (HttpClient httpClient = new HttpClient())
             {
-                HttpContent httpContent = new StringContent(jsonData,Encoding.UTF8,MediaType);
+                httpClient.DefaultRequestHeaders.Add("Accept", JsonMediaType);
+                HttpContent httpContent = new StringContent(jsonData,Encoding.UTF8,JsonMediaType);
                 Task<HttpResponseMessage> postResponse=httpClient.PostAsync(postUrl, httpContent);
                 HttpStatusCode statusCode = postResponse.Result.StatusCode;
                 HttpContent responseContent=postResponse.Result.Content;
@@ -49,6 +55,17 @@ namespace WebServiceAutomation.PostEndPoint
                 Assert.AreEqual(200, restResponse.Statuscode);
 
                 Assert.IsNotNull(restResponse.ResponseData);
+
+
+                Task<HttpResponseMessage> getResponse=httpClient.GetAsync(getUrl + id);
+
+                restResponseForGet = new RestResponse((int)getResponse.Result.StatusCode, 
+                    getResponse.Result.Content.ReadAsStringAsync().Result);
+
+
+                ResponseV2Json jsonResult= JsonConvert.DeserializeObject<ResponseV2Json>(restResponseForGet.ResponseData);
+
+                Assert.AreEqual(id, jsonResult.Id);
 
             }
 
