@@ -2,13 +2,16 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using WebServiceAutomation.Model;
 using WebServiceAutomation.Model.JsonModel;
+using WebServiceAutomation.Model.XMLModel;
 
 namespace WebServiceAutomation.PostEndPoint
 {
@@ -43,9 +46,9 @@ namespace WebServiceAutomation.PostEndPoint
             {
                 httpClient.DefaultRequestHeaders.Add("Accept", JsonMediaType);
                 HttpContent httpContent = new StringContent(jsonData,Encoding.UTF8,JsonMediaType);
-                Task<HttpResponseMessage> postResponse=httpClient.PostAsync(postUrl, httpContent);
-                HttpStatusCode statusCode = postResponse.Result.StatusCode;
-                HttpContent responseContent=postResponse.Result.Content;
+                Task<HttpResponseMessage> httpResponseMessage=httpClient.PostAsync(postUrl, httpContent);
+                HttpStatusCode statusCode = httpResponseMessage.Result.StatusCode;
+                HttpContent responseContent= httpResponseMessage.Result.Content;
 
                 string responseData = responseContent.ReadAsStringAsync().Result;
 
@@ -67,8 +70,64 @@ namespace WebServiceAutomation.PostEndPoint
 
                 Assert.AreEqual(id, jsonResult.Id);
 
+
+             
+
+
+
+
             }
 
+        }
+
+        [TestMethod]
+        public void TestPostEndPointXml()
+        {
+            int id = random.Next(1000);
+
+            string xmlData = "<Laptop>" +
+                                   "<BrandName>Alienware</BrandName>" +
+                            "<Features>" +
+                                        "<Feature>8th Generation Intel® Core™ i5-8300H</Feature>" +
+                                     "<Feature>Windows 10 Home 64-bit English</Feature>" +
+                                     "<Feature>NVIDIA® GeForce® GTX 1660 Ti 6GB GDDR6</Feature>" +
+                                     "<Feature>8GB, 2x4GB, DDR4, 2666MHz</Feature>" +
+                            "</Features>" +
+                               "<Id>" + id + "</Id>" +
+                               "<LaptopName>Alienware M17</LaptopName>" +
+                          "</Laptop>";
+            using (HttpClient httpClient= new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Add("Accept", XmlMediaType);
+                HttpContent httpContent = new StringContent(xmlData, Encoding.UTF8, XmlMediaType);
+                Task<HttpResponseMessage> httpResponseMessage = httpClient.PostAsync(postUrl, httpContent);
+
+                HttpStatusCode statusCode = httpResponseMessage.Result.StatusCode;
+                HttpContent responseContent = httpResponseMessage.Result.Content;
+
+                string responseData = responseContent.ReadAsStringAsync().Result;
+
+                restResponse = new RestResponse((int)statusCode, responseData);
+
+                Assert.AreEqual(200, restResponse.Statuscode);
+
+
+                httpResponseMessage = httpClient.GetAsync(getUrl + id);
+                statusCode = httpResponseMessage.Result.StatusCode;
+                responseContent = httpResponseMessage.Result.Content;
+
+
+                restResponseForGet = new RestResponse((int)statusCode, responseContent.ReadAsStringAsync().Result);
+
+
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(Laptop));
+                TextReader textReader = new StringReader(restResponseForGet.ResponseData);
+
+                Laptop laptop = (Laptop)xmlSerializer.Deserialize(textReader);
+
+                Assert.IsTrue(laptop.Id.Contains(id.ToString()));
+
+            }
         }
     }
 }
