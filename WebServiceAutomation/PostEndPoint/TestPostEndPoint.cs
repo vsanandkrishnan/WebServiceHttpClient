@@ -70,12 +70,6 @@ namespace WebServiceAutomation.PostEndPoint
 
                 Assert.AreEqual(id, jsonResult.Id);
 
-
-             
-
-
-
-
             }
 
         }
@@ -127,6 +121,69 @@ namespace WebServiceAutomation.PostEndPoint
 
                 Assert.IsTrue(laptop.Id.Contains(id.ToString()));
 
+            }
+        }
+
+        [TestMethod]
+        public void TestPostEndPointUsingSendAsync()
+        {
+
+            int id = random.Next(1000);
+            string jsonData = "{\"BrandName\":\"Alienware\",\"Features\":" +
+                "{\"Feature\":[\"8th Generation Intelu00ae Coreu2122 i5-8300H\"," +
+                "\"Windows 10 Home 64-bit English\"," +
+                "\"NVIDIAu00ae GeForceu00ae GTX 1660 Ti 6GB GDDR6\"," +
+                "\"8GB, 2x4GB, DDR4, 2666MHz\"]}," +
+                "\"Id\":" + id + ",\"LaptopName\":\"Alienware M17\"}";
+
+
+            using (HttpClient httpClient= new HttpClient())
+            {
+                using(HttpRequestMessage httpRequestMessage = new HttpRequestMessage())
+                {
+                    httpRequestMessage.Method = HttpMethod.Post;
+                    httpRequestMessage.RequestUri = new Uri(postUrl);
+                    httpRequestMessage.Content = new StringContent(jsonData, Encoding.UTF8, JsonMediaType);
+                    Task<HttpResponseMessage> httpResponseMessage = httpClient.SendAsync(httpRequestMessage);
+
+                    restResponse = new RestResponse((int)httpResponseMessage.Result.StatusCode, httpResponseMessage.Result.Content.ReadAsStringAsync().Result);
+
+                    Assert.AreEqual(200, restResponse.Statuscode);
+                }
+            }
+
+        }
+
+        [TestMethod]
+        public void TestPostEndPointUsingSendAsyncXml()
+        {
+            int id = random.Next(1000);
+            string xmlData = "<Laptop>" +
+                                   "<BrandName>Alienware</BrandName>" +
+                            "<Features>" +
+                                        "<Feature>8th Generation Intel® Core™ i5-8300H</Feature>" +
+                                     "<Feature>Windows 10 Home 64-bit English</Feature>" +
+                                     "<Feature>NVIDIA® GeForce® GTX 1660 Ti 6GB GDDR6</Feature>" +
+                                     "<Feature>8GB, 2x4GB, DDR4, 2666MHz</Feature>" +
+                            "</Features>" +
+                               "<Id>" + id + "</Id>" +
+                               "<LaptopName>Alienware M17</LaptopName>" +
+                          "</Laptop>";
+
+            using(HttpClient httpClient = new HttpClient())
+            {
+                using(HttpRequestMessage httpRequestMessage = new HttpRequestMessage())
+                {
+                    httpRequestMessage.Method = HttpMethod.Post;
+                    httpRequestMessage.RequestUri = new Uri(postUrl);
+                    httpRequestMessage.Content = new StringContent(xmlData, Encoding.UTF8, XmlMediaType);
+
+                    Task<HttpResponseMessage> httpResponseMessage = httpClient.SendAsync(httpRequestMessage);
+
+                    restResponse = new RestResponse((int)httpResponseMessage.Result.StatusCode, httpResponseMessage.Result.Content.ReadAsStringAsync().Result);
+
+                    Assert.AreEqual(200, restResponse.Statuscode);
+                }
             }
         }
     }
