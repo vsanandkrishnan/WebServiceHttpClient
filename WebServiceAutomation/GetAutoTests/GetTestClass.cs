@@ -294,7 +294,7 @@ namespace WebServiceAutomation.GetAutoTests
 
             var restResponse=HttpClientHelper.PerformGetRequest(getUrl, httpHeader);
 
-           List<ResponseV2Json> responseV2Json = JsonConvert.DeserializeObject<List<ResponseV2Json>>(restResponse.ResponseData);
+            List<ResponseV2Json> responseV2Json = JsonConvert.DeserializeObject<List<ResponseV2Json>>(restResponse.ResponseData);
 
             Console.WriteLine(responseV2Json.First().BrandName);
 

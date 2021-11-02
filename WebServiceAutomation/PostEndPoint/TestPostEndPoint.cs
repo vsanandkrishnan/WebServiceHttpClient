@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using WebServiceAutomation.Helper.Request;
 using WebServiceAutomation.Model;
 using WebServiceAutomation.Model.JsonModel;
 using WebServiceAutomation.Model.XMLModel;
@@ -187,6 +188,34 @@ namespace WebServiceAutomation.PostEndPoint
             }
         }
 
+        [TestMethod]
+        public void TestPostUsingHelperClass()
+        {
+            int id = random.Next(1000);
+            string xmlData = "<Laptop>" +
+                                    "<BrandName>Alienware</BrandName>" +
+                             "<Features>" +
+                                         "<Feature>8th Generation Intel® Core™ i5-8300H</Feature>" +
+                                      "<Feature>Windows 10 Home 64-bit English</Feature>" +
+                                      "<Feature>NVIDIA® GeForce® GTX 1660 Ti 6GB GDDR6</Feature>" +
+                                      "<Feature>8GB, 2x4GB, DDR4, 2666MHz</Feature>" +
+                             "</Features>" +
+                                "<Id>" + id + "</Id>" +
+                                "<LaptopName>Alienware M17</LaptopName>" +
+                           "</Laptop>";
+
+            Dictionary<string, string> httpHeaders = new Dictionary<string, string>()
+            {
+                {"Accept", "application/xml" }
+            };
+
+
+            restResponse = HttpClientHelper.PerformPostRequest(postUrl, xmlData, XmlMediaType, httpHeaders);
+
+
+
+            Assert.AreEqual(200, restResponse.Statuscode);
+        }
 
     }
 }

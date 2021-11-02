@@ -86,9 +86,45 @@ namespace WebServiceAutomation.Helper.Request
             return restResponse;
         }
 
+        /// <summary>
+        /// Get Request 
+        /// </summary>
+        /// <param name="requestUrl"></param>
+        /// <param name="httpHeaders"></param>
+        /// <returns></returns>
         public static RestResponse PerformGetRequest(string requestUrl, Dictionary<string, string> httpHeaders)
         {
             return SendRequest(requestUrl, HttpMethod.Get, null, httpHeaders);
         }
+
+        /// <summary>
+        /// Direct Post Request when HttpContent is given.
+        /// </summary>
+        /// <param name="requestUrl"></param>
+        /// <param name="httpContent"></param>
+        /// <param name="httpHeaders"></param>
+        /// <returns></returns>
+        public static RestResponse PerformPostRequest(string requestUrl, HttpContent httpContent, 
+            Dictionary<string, string> httpHeaders)
+        {
+            return SendRequest(requestUrl, HttpMethod.Post, httpContent, httpHeaders);
+        }
+
+        /// <summary>
+        /// Post Request starting from StringContent Data.
+        /// </summary>
+        /// <param name="requestUrl"></param>
+        /// <param name="data"></param>
+        /// <param name="mediaType"></param>
+        /// <param name="httpHeaders"></param>
+        /// <returns></returns>
+        public static RestResponse PerformPostRequest(string requestUrl, string data, string mediaType,
+            Dictionary<string, string> httpHeaders)
+        {
+            HttpContent httpContent = new StringContent(data, Encoding.UTF8, mediaType);
+            return PerformPostRequest(requestUrl,httpContent, httpHeaders);
+        }
+
+
     }
 }
