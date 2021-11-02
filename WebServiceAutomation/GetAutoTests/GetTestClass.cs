@@ -10,6 +10,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using WebServiceAutomation.Helper.Request;
 using WebServiceAutomation.Model;
 using WebServiceAutomation.Model.JsonModel;
 using WebServiceAutomation.Model.XMLModel;
@@ -281,6 +282,21 @@ namespace WebServiceAutomation.GetAutoTests
                     }
                 }
             }
+
+        }
+
+        [TestMethod]
+        public void GetUsingHelperMethod()
+        {
+            Dictionary<string, string> httpHeader = new Dictionary<string, string>();
+            httpHeader.Add("Accept", "application/json");
+
+
+            var restResponse=HttpClientHelper.PerformGetRequest(getUrl, httpHeader);
+
+           List<ResponseV2Json> responseV2Json = JsonConvert.DeserializeObject<List<ResponseV2Json>>(restResponse.ResponseData);
+
+            Console.WriteLine(responseV2Json.First().BrandName);
 
         }
 

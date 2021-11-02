@@ -8,7 +8,7 @@ using WebServiceAutomation.Model;
 
 namespace WebServiceAutomation.Helper.Request
 {
-    public class HttpClientHelper
+     class HttpClientHelper
     {
         private static HttpClient httpClient;
         private static HttpRequestMessage httpRequestMessage;
@@ -86,6 +86,9 @@ namespace WebServiceAutomation.Helper.Request
             return restResponse;
         }
 
-        public static RestResponse PerformGetRequest(string requestUrl, Dictionary<string, string> httpHeaders) => SendRequest(requestUrl, HttpMethod.Get, null, httpHeaders);
+        public static RestResponse PerformGetRequest(string requestUrl, Dictionary<string, string> httpHeaders)
+        {
+            return SendRequest(requestUrl, HttpMethod.Get, null, httpHeaders);
+        }
     }
 }
