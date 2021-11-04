@@ -47,7 +47,7 @@ namespace WebServiceAutomation.Helper.Request
         {
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage(httpMethod, requestUrl);
 
-            if(!(httpMethod==HttpMethod.Post))
+            if(httpMethod==HttpMethod.Post)
                 httpRequestMessage.Content = httpContent;
 
             return httpRequestMessage;
