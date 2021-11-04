@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using WebServiceAutomation.Helper.Request;
+using WebServiceAutomation.Helper.Responsedata;
 using WebServiceAutomation.Model;
 using WebServiceAutomation.Model.JsonModel;
 using WebServiceAutomation.Model.XMLModel;
@@ -212,8 +213,10 @@ namespace WebServiceAutomation.PostEndPoint
 
             restResponse = HttpClientHelper.PerformPostRequest(postUrl, xmlData, XmlMediaType, httpHeaders);
 
+            var xmlResponse=ResponseDataHelper.DesrializeXmlResponse<Laptop>(restResponse.ResponseData);
 
-
+            Assert.AreEqual("Alienware", xmlResponse.BrandName);
+            
             Assert.AreEqual(200, restResponse.Statuscode);
         }
 

@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 
 namespace WebServiceAutomation.Helper.Responsedata
 {
-    public class ResponsedDataHelper
+    public class ResponseDataHelper
     {
 
         /// <summary>

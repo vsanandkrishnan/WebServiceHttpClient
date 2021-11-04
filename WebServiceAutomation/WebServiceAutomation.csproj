@@ -95,6 +95,7 @@
   <ItemGroup>
     <Compile Include="GetAutoTests\GetTestClass.cs" />
     <Compile Include="Helper\Request\HttpClientHelper.cs" />
+    <Compile Include="Helper\Responsedata\ResponseDataHelper.cs" />
     <Compile Include="Model\JsonModel\Features.cs" />
     <Compile Include="Model\JsonModel\ResponseV2Json.cs" />
     <Compile Include="Model\RestResponse.cs" />

@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using WebServiceAutomation.Helper.Request;
+using WebServiceAutomation.Helper.Responsedata;
 using WebServiceAutomation.Model;
 using WebServiceAutomation.Model.JsonModel;
 using WebServiceAutomation.Model.XMLModel;
@@ -21,6 +22,8 @@ namespace WebServiceAutomation.GetAutoTests
     public class GetTestClass
     {
         private string getUrl = @"http://localhost:8080/laptop-bag/webapi/api/all";
+
+
         [TestMethod]
         public void GetMethodwithUrl()
         {
@@ -294,7 +297,9 @@ namespace WebServiceAutomation.GetAutoTests
 
             var restResponse=HttpClientHelper.PerformGetRequest(getUrl, httpHeader);
 
-            List<ResponseV2Json> responseV2Json = JsonConvert.DeserializeObject<List<ResponseV2Json>>(restResponse.ResponseData);
+            //List<ResponseV2Json> responseV2Json = JsonConvert.DeserializeObject<List<ResponseV2Json>>(restResponse.ResponseData);
+
+            var responseV2Json = ResponseDataHelper.DeserializeJsonResponse<List<ResponseV2Json>>(restResponse.ResponseData);
 
             Console.WriteLine(responseV2Json.First().BrandName);
 
