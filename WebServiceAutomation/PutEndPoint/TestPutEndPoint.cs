@@ -69,17 +69,11 @@ namespace WebServiceAutomation.PutEndPoint
                                "<LaptopName>Alienware M17</LaptopName>" +
                           "</Laptop>";
 
-            using(HttpClient httpClient = new HttpClient())
-            {
-                HttpContent httpContent = new StringContent(xmlData, Encoding.UTF8, XmlMediaType);
-                Task<HttpResponseMessage> httpResponseMessage=httpClient.PutAsync(putUrl, httpContent);
-                restResponse = new RestResponse((int)httpResponseMessage.Result.StatusCode, httpResponseMessage.Result.Content.ReadAsStringAsync().Result);
+            HttpContent httpContent = new StringContent(xmlData, Encoding.UTF8, XmlMediaType);
+            restResponse=HttpClientHelper.PerformPutRequest(putUrl, httpContent, httpHeaders);
+            Assert.AreEqual(200, restResponse.Statuscode, $"{restResponse.Statuscode} is the status code returned by the rest response");
 
-                Assert.AreEqual(200, restResponse.Statuscode, $"{restResponse.Statuscode} is the status code returned by the rest response");
-            }
-
-            restResponse=HttpClientHelper.PerformGetRequest(getUrl + id, httpHeaders);
-
+            restResponse =HttpClientHelper.PerformGetRequest(getUrl + id, httpHeaders);
             Laptop laptop = ResponseDataHelper.DesrializeXmlResponse<Laptop>(restResponse.ResponseData);
 
             Assert.AreEqual(200, restResponse.Statuscode, $"{restResponse.Statuscode} is the status code returned by the rest response");
