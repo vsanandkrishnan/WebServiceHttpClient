@@ -47,7 +47,7 @@ namespace WebServiceAutomation.Helper.Request
         {
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage(httpMethod, requestUrl);
 
-            if(httpMethod==HttpMethod.Post)
+            if(httpMethod==HttpMethod.Post || httpMethod== HttpMethod.Put)
                 httpRequestMessage.Content = httpContent;
 
             return httpRequestMessage;
@@ -123,6 +123,34 @@ namespace WebServiceAutomation.Helper.Request
         {
             HttpContent httpContent = new StringContent(data, Encoding.UTF8, mediaType);
             return PerformPostRequest(requestUrl,httpContent, httpHeaders);
+        }
+
+        /// <summary>
+        /// Put request with data as string type
+        /// </summary>
+        /// <param name="requestUrl"></param>
+        /// <param name="content"></param>
+        /// <param name="mediaType"></param>
+        /// <param name="httpHeaders"></param>
+        /// <returns>RestResponse</returns>
+        public static RestResponse PerformPutRequest(string requestUrl, string content, string mediaType,
+            Dictionary<string,string> httpHeaders)
+        {
+            HttpContent httpContent = new StringContent( content, Encoding.UTF8, mediaType);
+            return SendRequest(requestUrl, HttpMethod.Put, httpContent, httpHeaders);
+        }
+
+        /// <summary>
+        /// Put request with data as HttpContent type
+        /// </summary>
+        /// <param name="requestUrl"></param>
+        /// <param name="httpContent"></param>
+        /// <param name="httpHeaders"></param>
+        /// <returns>RestResponse</returns>
+        public static RestResponse PerformPutRequest(string requestUrl, HttpContent httpContent,
+            Dictionary<string, string> httpHeaders)
+        {
+            return SendRequest(requestUrl, HttpMethod.Put, httpContent, httpHeaders);
         }
 
 
