@@ -30,13 +30,8 @@ namespace WebServiceAutomation.DeleteEndPoint
 
             Assert.AreEqual(200, statusCode, $"{statusCode} is the code returned from the AddRecord method");
 
-            using(HttpClient httpClient = new HttpClient())
-            {
-                Task<HttpResponseMessage> httpResponseMessage= httpClient.DeleteAsync(deleteUrl + id);
-                HttpStatusCode httpStatusCode=httpResponseMessage.Result.StatusCode;
-                Assert.AreEqual(HttpStatusCode.OK, httpStatusCode, $"{httpStatusCode} is the code returned from the delete request");
-                
-            }
+            restResponse = HttpClientHelper.PerformDeleteRequest(deleteUrl+id);
+            Assert.AreEqual(200, restResponse.Statuscode);
 
 
         }

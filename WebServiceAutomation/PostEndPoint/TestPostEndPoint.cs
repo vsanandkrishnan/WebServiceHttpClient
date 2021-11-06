@@ -23,20 +23,26 @@ namespace WebServiceAutomation.PostEndPoint
 
         private string postUrl = @"http://localhost:8080/laptop-bag/webapi/api/add";
         private string getUrl = @"http://localhost:8080/laptop-bag/webapi/api/find/";
+        private string deleteUrl = @"http://localhost:8080/laptop-bag/webapi/api/delete/";
         private RestResponse restResponse;
         private RestResponse restResponseForGet;
         private static string JsonMediaType = "application/json";
         private static string XmlMediaType = "application/xml";
         private Random random = new Random();
+        private int id;
+
+        [TestInitialize]
+        public void TestSetUp()
+        {
+            id = random.Next(1000);
+        }
 
         [TestMethod]
         public void TestPostEndPointJson()
         {
             //Method - PostAsync
             //Body along with Request
-            //Header -info about data format
-
-            int id = random.Next(1000);
+            //Header -info about data format           
             string jsonData = "{\"BrandName\":\"Alienware\",\"Features\":" +
                 "{\"Feature\":[\"8th Generation Intelu00ae Coreu2122 i5-8300H\"," +
                 "\"Windows 10 Home 64-bit English\"," +
@@ -79,8 +85,6 @@ namespace WebServiceAutomation.PostEndPoint
         [TestMethod]
         public void TestPostEndPointXml()
         {
-            int id = random.Next(1000);
-
             string xmlData = "<Laptop>" +
                                    "<BrandName>Alienware</BrandName>" +
                             "<Features>" +
@@ -129,8 +133,6 @@ namespace WebServiceAutomation.PostEndPoint
         [TestMethod]
         public void TestPostEndPointUsingSendAsync()
         {
-
-            int id = random.Next(1000);
             string jsonData = "{\"BrandName\":\"Alienware\",\"Features\":" +
                 "{\"Feature\":[\"8th Generation Intelu00ae Coreu2122 i5-8300H\"," +
                 "\"Windows 10 Home 64-bit English\"," +
@@ -159,7 +161,6 @@ namespace WebServiceAutomation.PostEndPoint
         [TestMethod]
         public void TestPostEndPointUsingSendAsyncXml()
         {
-            int id = random.Next(1000);
             string xmlData = "<Laptop>" +
                                    "<BrandName>Alienware</BrandName>" +
                             "<Features>" +
@@ -192,7 +193,6 @@ namespace WebServiceAutomation.PostEndPoint
         [TestMethod]
         public void TestPostUsingHelperClass()
         {
-            int id = random.Next(1000);
             string xmlData = "<Laptop>" +
                                     "<BrandName>Alienware</BrandName>" +
                              "<Features>" +
@@ -218,6 +218,13 @@ namespace WebServiceAutomation.PostEndPoint
             Assert.AreEqual("Alienware", xmlResponse.BrandName);
             
             Assert.AreEqual(200, restResponse.Statuscode);
+        }
+
+        [TestCleanup]
+        public void TearDownMethod()
+        {
+            restResponse = HttpClientHelper.PerformDeleteRequest(deleteUrl+id);
+            Assert.AreEqual(restResponse.Statuscode, 200);
         }
 
     }

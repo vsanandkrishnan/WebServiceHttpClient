@@ -153,6 +153,16 @@ namespace WebServiceAutomation.Helper.Request
             return SendRequest(requestUrl, HttpMethod.Put, httpContent, httpHeaders);
         }
 
+        /// <summary>
+        /// Delete request method
+        /// </summary>
+        /// <param name="requestUrl"></param>
+        /// <returns>RestResponse</returns>
+        public static RestResponse PerformDeleteRequest(string requestUrl)
+        {
+            return SendRequest(requestUrl, HttpMethod.Delete, null, null);
+        }
+
 
     }
 }
