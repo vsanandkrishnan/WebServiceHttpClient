@@ -95,6 +95,7 @@
   <ItemGroup>
     <Compile Include="DeleteEndPoint\TestDeleteEndPoint.cs" />
     <Compile Include="GetAutoTests\GetTestClass.cs" />
+    <Compile Include="Helper\Authentication\Base64StringConverter.cs" />
     <Compile Include="Helper\Request\HttpClientHelper.cs" />
     <Compile Include="Helper\Responsedata\ResponseDataHelper.cs" />
     <Compile Include="Model\JsonModel\Features.cs" />

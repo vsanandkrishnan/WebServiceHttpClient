@@ -10,6 +10,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using WebServiceAutomation.Helper.Authentication;
 using WebServiceAutomation.Helper.Request;
 using WebServiceAutomation.Helper.Responsedata;
 using WebServiceAutomation.Model;
@@ -22,6 +23,7 @@ namespace WebServiceAutomation.GetAutoTests
     public class GetTestClass
     {
         private string getUrl = @"http://localhost:8080/laptop-bag/webapi/api/all";
+        private string secureGetUrl = @"http://localhost:8080/laptop-bag/webapi/secure/all";
 
 
         [TestMethod]
@@ -302,6 +304,29 @@ namespace WebServiceAutomation.GetAutoTests
             var responseV2Json = ResponseDataHelper.DeserializeJsonResponse<List<ResponseV2Json>>(restResponse.ResponseData);
 
             Console.WriteLine(responseV2Json.First().BrandName);
+
+        }
+
+
+        [TestMethod]
+        public void GetUsingSecureUrl()
+        {
+            Dictionary<string, string> httpHeader = new Dictionary<string, string>();
+            httpHeader.Add("Accept", "application/json");
+            // httpHeader.Add("Authorization", "Basic YWRtaW46d2VsY29tZQ==");
+
+            string authHeader =Base64StringConverter.GetBase64String("admin", "welcome");
+
+            authHeader = "Basic " + authHeader;
+
+            httpHeader.Add("Authorization", authHeader);
+
+            var restResponse = HttpClientHelper.PerformGetRequest(secureGetUrl, httpHeader);
+
+
+            var responseV2Json = ResponseDataHelper.DeserializeJsonResponse<List<ResponseV2Json>>(restResponse.ResponseData);
+            Assert.AreEqual(200, restResponse.Statuscode);
+
 
         }
 
