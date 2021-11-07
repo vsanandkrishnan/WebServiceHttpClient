@@ -24,6 +24,7 @@ namespace WebServiceAutomation.GetAutoTests
     {
         private string getUrl = @"http://localhost:8080/laptop-bag/webapi/api/all";
         private string secureGetUrl = @"http://localhost:8080/laptop-bag/webapi/secure/all";
+        private string delayGet = @"http://localhost:8080/laptop-bag/webapi/delay/all";
 
 
         [TestMethod]
@@ -330,6 +331,43 @@ namespace WebServiceAutomation.GetAutoTests
 
         }
 
+        [TestMethod]
+        public void GetDelayGetRequest()
+        {
+            Dictionary<string, string> httpHeader = new Dictionary<string, string>();
+            httpHeader.Add("Accept", "application/json");
+
+
+            RestResponse restResponse=HttpClientHelper.PerformGetRequest(@"http://localhost:8080/laptop-bag/webapi/delay/all", httpHeader);
+
+            Assert.AreEqual(200, restResponse.Statuscode);
+        }
+
+        [TestMethod]
+        public void GetDelayGetRequest_Async()
+        {
+            Task t1 = new Task(GetEndPoint());
+            t1.Start();
+            Task t2 = new Task(GetEndPoint());
+            t2.Start();
+            Task t3 = new Task(GetEndPoint());
+            t3.Start();
+
+            t1.Wait();
+            t2.Wait();
+            t3.Wait();
+
+        }
+
+        private Action GetEndPoint()
+        {
+            Dictionary<string, string> httpHeader = new Dictionary<string, string>();
+            httpHeader.Add("Accept", "application/json");
+            return new Action(() =>
+            {
+                HttpClientHelper.PerformGetRequest(delayGet, httpHeader);
+            });
+        }
 
     }
 }

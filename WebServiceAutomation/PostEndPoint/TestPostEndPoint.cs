@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using WebServiceAutomation.Helper.Authentication;
 using WebServiceAutomation.Helper.Request;
 using WebServiceAutomation.Helper.Responsedata;
 using WebServiceAutomation.Model;
@@ -24,6 +25,8 @@ namespace WebServiceAutomation.PostEndPoint
         private string postUrl = @"http://localhost:8080/laptop-bag/webapi/api/add";
         private string getUrl = @"http://localhost:8080/laptop-bag/webapi/api/find/";
         private string deleteUrl = @"http://localhost:8080/laptop-bag/webapi/api/delete/";
+        private string securePostUrl = @"http://localhost:8080/laptop-bag/webapi/secure/add";
+        private string secureGetUrl = @"http://localhost:8080/laptop-bag/webapi/secure/find/";
         private RestResponse restResponse;
         private RestResponse restResponseForGet;
         private static string JsonMediaType = "application/json";
@@ -219,6 +222,41 @@ namespace WebServiceAutomation.PostEndPoint
             
             Assert.AreEqual(200, restResponse.Statuscode);
         }
+
+        [TestMethod]
+        public void PostUsingSecureUrls()
+        {
+            string xmlData = "<Laptop>" +
+                                    "<BrandName>Alienware</BrandName>" +
+                             "<Features>" +
+                                         "<Feature>8th Generation Intel® Core™ i5-8300H</Feature>" +
+                                      "<Feature>Windows 10 Home 64-bit English</Feature>" +
+                                      "<Feature>NVIDIA® GeForce® GTX 1660 Ti 6GB GDDR6</Feature>" +
+                                      "<Feature>8GB, 2x4GB, DDR4, 2666MHz</Feature>" +
+                             "</Features>" +
+                                "<Id>" + id + "</Id>" +
+                                "<LaptopName>Alienware M17</LaptopName>" +
+                           "</Laptop>";
+
+            string auth = Base64StringConverter.GetBase64String("admin", "welcome");
+            auth = "Basic " + auth;
+            Dictionary<string, string> httpHeaders = new Dictionary<string, string>()
+            {
+                {"Accept", "application/xml" },
+                {"Authorization",auth}
+            };
+
+            restResponse = HttpClientHelper.PerformPostRequest(securePostUrl, xmlData, XmlMediaType, httpHeaders);
+            Assert.AreEqual(200, restResponse.Statuscode);
+
+            restResponseForGet = HttpClientHelper.PerformGetRequest(secureGetUrl + id,httpHeaders);
+            Assert.AreEqual(200, restResponseForGet.Statuscode);
+
+
+
+        }
+
+
 
         [TestCleanup]
         public void TearDownMethod()
