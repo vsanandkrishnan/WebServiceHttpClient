@@ -352,20 +352,35 @@ namespace WebServiceAutomation.GetAutoTests
             t2.Start();
             Task t3 = new Task(GetEndPoint());
             t3.Start();
+            Task t4 = new Task(GetEndPointFailed());
+            t4.Start();
 
             t1.Wait();
             t2.Wait();
             t3.Wait();
+            t4.Wait();
 
         }
 
         private Action GetEndPoint()
         {
             Dictionary<string, string> httpHeader = new Dictionary<string, string>();
-            httpHeader.Add("Accept", "application/json");
+            httpHeader.Add("Accept", "application/xml");
             return new Action(() =>
             {
-                HttpClientHelper.PerformGetRequest(delayGet, httpHeader);
+                RestResponse restResponse=HttpClientHelper.PerformGetRequest(delayGet, httpHeader);
+                Assert.AreEqual(200, restResponse.Statuscode);
+            });
+        }
+
+        private Action GetEndPointFailed()
+        {
+            Dictionary<string, string> httpHeader = new Dictionary<string, string>();
+            httpHeader.Add("Accept", "application/xml");
+            return new Action(() =>
+            {
+                RestResponse restResponse = HttpClientHelper.PerformGetRequest(delayGet, httpHeader);
+                Assert.AreEqual(201, restResponse.Statuscode);
             });
         }
 
