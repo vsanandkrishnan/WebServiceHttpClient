@@ -282,7 +282,8 @@ namespace WebServiceAutomation.GetAutoTests
 
                         //returns boolean value
                         string feature = "8th Generation Intel® Core™ i5-8300H";
-                        var IsPresent = xmlData.Laptop.Features.Feature.Contains(feature);
+                        var IsPresent = xmlData.Laptop.Any(X => X.Features.Feature.Contains(feature));
+                            //Features.Feature.Contains(feature);
 
                         Assert.IsTrue(IsPresent, $"The features does not contain the feature {feature}");
                     }
