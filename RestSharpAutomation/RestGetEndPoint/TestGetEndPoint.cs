@@ -87,16 +87,22 @@ namespace RestSharpAutomation.RestGetEndPoint
 
             var dotNetXmlDesrializer = new RestSharp.Deserializers.DotNetXmlDeserializer();
             IRestResponse restResponse = restClient.Get(restRequest);
-            LaptopDetails data = dotNetXmlDesrializer.Deserialize<LaptopDetails>(restResponse);
 
             if (restResponse.IsSuccessful)
             {
+                LaptopDetails data = dotNetXmlDesrializer.Deserialize<LaptopDetails>(restResponse);
                 Console.WriteLine("The status code is " + restResponse.StatusCode);
                 Console.WriteLine("The size of the list is " + data.Laptop.Count);
                 Assert.AreEqual(200, (int)restResponse.StatusCode);
 
-                Assert.AreEqual("Alienware", data.Laptop[0].BrandName);
-                Assert.IsTrue(data.Laptop[0].Features.Feature.Contains("8th Generation Intel® Core™ i5-8300H"));
+                Laptop dataChecker = data.Laptop.Find(X =>
+                 {
+                     return X.Id.Equals("1", StringComparison.OrdinalIgnoreCase);
+
+                 });
+
+                Assert.AreEqual("Alienware", dataChecker.BrandName);
+                Assert.IsTrue(dataChecker.Features.Feature.Contains("8th Generation Intel® Core™ i5-8300H"));
 
             }
             else
@@ -105,6 +111,25 @@ namespace RestSharpAutomation.RestGetEndPoint
                 Console.WriteLine("Stack trace " + restResponse.ErrorException);
             }
 
+        }
+
+        [TestMethod]
+        public void TestGetWithExecute()
+        {
+            IRestClient restClient = new RestClient();
+            IRestRequest restRequest = new RestRequest()
+            {
+                Method = Method.GET,
+                Resource = getUrl
+
+            };
+
+            restRequest.AddHeader("Accept", JsonMediaType);
+
+            IRestResponse<List<ResponseV2Json>> restResponse=restClient.Execute<List<ResponseV2Json>>(restRequest);
+
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, restResponse.StatusCode);
+            Assert.AreEqual("Alienware", restResponse.Data.First().BrandName);
         }
 
 
