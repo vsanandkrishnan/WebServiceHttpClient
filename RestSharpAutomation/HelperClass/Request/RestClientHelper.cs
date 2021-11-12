@@ -9,6 +9,9 @@ namespace RestSharpAutomation.HelperClass.Request
 {
     public class RestClientHelper
     {
+
+        private static string XmlMediaType = "application/xml";
+
         /// <summary>
         /// Rest Client
         /// </summary>
@@ -26,7 +29,7 @@ namespace RestSharpAutomation.HelperClass.Request
         /// <param name="httpHeaders"></param>
         /// <param name="method"></param>
         /// <returns>Rest Request</returns>
-        private IRestRequest GetRestRequest(string url, Dictionary<string,string> httpHeaders,Method method)
+        private IRestRequest GetRestRequest(string url, Dictionary<string,string> headers,Method method)
         {
             IRestRequest restRequest = new RestRequest()
             {
@@ -34,9 +37,9 @@ namespace RestSharpAutomation.HelperClass.Request
                 Method = method
             };
 
-            foreach(var key in httpHeaders.Keys)
+            foreach(var key in headers.Keys)
             {
-                restRequest.AddHeader(key, httpHeaders[key]);
+                restRequest.AddHeader(key, headers[key]);
             }
 
             return restRequest;
@@ -64,12 +67,42 @@ namespace RestSharpAutomation.HelperClass.Request
         {
             IRestClient restClient = GetRestClient();
             IRestResponse<T> restResponse = restClient.Execute<T>(restRequest);
-            return restResponse;
 
+            if (restResponse.ContentType.Equals(XmlMediaType))
+            {
+                var deserializer = new RestSharp.Deserializers.DotNetXmlDeserializer();
+                restResponse.Data = deserializer.Deserialize<T>(restResponse);
+            }
+            return restResponse;
+        }
+
+        /// <summary>
+        /// Perform GET request without deserialization
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="headers"></param>
+        /// <returns>Rest Response</returns>
+        public IRestResponse PerformGetRequest(string url, Dictionary<string,string> headers)
+        {
+            IRestRequest restRequest = GetRestRequest(url, headers, Method.GET);
+            IRestResponse restResponse = SendRequest(restRequest);
+            return restResponse;
         }
 
 
-
+        /// <summary>
+        /// Perform GET request with deserialization
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="headers"></param>
+        /// <returns>Deserialized Rest Response</returns>
+        public IRestResponse<T> PerformGetRequest<T>(string url, Dictionary<string, string> headers) where T: new()
+        {
+            IRestRequest restRequest = GetRestRequest(url, headers, Method.GET);
+            IRestResponse<T> restResponse = SendRequest<T>(restRequest);
+            return restResponse;
+        }
 
     }
 }
