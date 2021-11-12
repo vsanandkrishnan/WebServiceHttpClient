@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
+using RestSharpAutomation.HelperClass.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -132,6 +133,37 @@ namespace RestSharpAutomation.RestGetEndPoint
             Assert.AreEqual("Alienware", restResponse.Data.First().BrandName);
         }
 
+        [TestMethod]
+        public void TestGetWithHelperMethods()
+        {
+            Dictionary<string, string> headers = new Dictionary<string, string>()
+            {
+                {"Accept",XmlMediaType}
+            };
+
+            RestClientHelper clientHelper = new RestClientHelper();
+
+            var restResponse=clientHelper.PerformGetRequest(getUrl, headers);
+
+            Assert.AreEqual(200, (int)restResponse.StatusCode);
+            Assert.IsNotNull(restResponse.Content,"Content is not null or empty");
+        }
+
+        [TestMethod]
+        public void TestGetWithHelperMethodsWithTypeParameter()
+        {
+            Dictionary<string, string> headers = new Dictionary<string, string>()
+            {
+                {"Accept",XmlMediaType}
+            };
+
+            RestClientHelper clientHelper = new RestClientHelper();
+
+            var restResponse = clientHelper.PerformGetRequest<LaptopDetails>(getUrl, headers);
+
+            Assert.AreEqual(200, (int)restResponse.StatusCode);
+            Assert.IsNotNull(restResponse.Data.Laptop, "Content is not null or empty");
+        }
 
     }
 }
