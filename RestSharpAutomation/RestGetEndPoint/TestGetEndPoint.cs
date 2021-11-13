@@ -165,5 +165,21 @@ namespace RestSharpAutomation.RestGetEndPoint
             Assert.IsNotNull(restResponse.Data.Laptop, "Content is not null or empty");
         }
 
+        [TestMethod]
+        public void TestGetWithHelperMethodsWithTypeParameterJson()
+        {
+            Dictionary<string, string> headers = new Dictionary<string, string>()
+            {
+                {"Accept",JsonMediaType}
+            };
+
+            RestClientHelper clientHelper = new RestClientHelper();
+
+            var restResponse = clientHelper.PerformGetRequest<List<ResponseV2Json>>(getUrl, headers);
+
+            Assert.AreEqual(200, (int)restResponse.StatusCode);
+            Assert.IsNotNull(restResponse.Data.First().BrandName, "Content is not null or empty");
+        }
+
     }
 }

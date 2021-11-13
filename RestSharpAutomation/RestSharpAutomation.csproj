@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="HelperClass\Request\RestClientHelper.cs" />
     <Compile Include="RestGetEndPoint\TestGetEndPoint.cs" />
+    <Compile Include="RestPostEndPoint\TestPostEndPoint.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
