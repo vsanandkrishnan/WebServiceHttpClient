@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
+using RestSharpAutomation.HelperClass.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -88,11 +89,28 @@ namespace RestSharpAutomation.RestPostEndPoint
             
 
             Assert.AreEqual(200, (int)restResponse.StatusCode);
-            
-
-            
-            
-
         }
+
+        [TestMethod]
+        public void TestPostWithModelObject_Helper()
+        {
+            Dictionary<string, string> headers = new Dictionary<string, string>()
+            {
+                {"Content-Type",JsonMediaType},
+                {"Accept",JsonMediaType }
+            };
+
+            RestClientHelper restClietHelper = new RestClientHelper();
+
+            var restData=restClietHelper.PerformPostRequest<List<ResponseV2Json>>(postUrl,headers,GetLaptopObject(),
+                DataFormat.Json);
+
+            
+
+
+            Assert.AreEqual(200, (int)restData.StatusCode);
+        }
+
+
     }
 }
