@@ -45,20 +45,53 @@ namespace RestSharpAutomation.RestPostEndPoint
 
             Assert.AreEqual(200, (int)restResponse.StatusCode);
 
-            IRestRequest getRestRequest = new RestRequest()
+
+        }
+
+        private ResponseV2Json GetLaptopObject()
+        {
+            ResponseV2Json laptop = new ResponseV2Json();
+            laptop.BrandName = "Dell Inspirion";
+            laptop.LaptopName = "Dell Latitude Inspirion";
+
+            Features features = new Features();
+
+            List<string> featureList = new List<string>()
             {
-                Resource = getUrl + id
+                ("Simple Feature one")
             };
 
-            getRestRequest.AddHeader("Accept", JsonMediaType);
+            features.Feature = featureList;
 
-            IRestResponse<List<ResponseV2Json>> getRestResponse = restClient.Execute<List<ResponseV2Json>>(getRestRequest);
+            laptop.Features = features;
 
-            Assert.IsTrue(getRestResponse.IsSuccessful);
+            laptop.Id = random.Next(1000);
 
-            var response = getRestResponse.Data.Find(resp => resp.Id.Equals(id));
+            return laptop;
+        }
 
-            Assert.AreEqual(response.BrandName, "Alienware");
+        [TestMethod]
+        public void TestPostWithModelObject()
+        {
+            var restClient = new RestClient();
+            var restRequest = new RestRequest()
+            {
+                Resource = postUrl
+            };
+
+            restRequest.AddHeader("Content-Type", JsonMediaType);
+            restRequest.AddHeader("Accept", JsonMediaType);
+            restRequest.RequestFormat = DataFormat.Json;
+            restRequest.AddBody(GetLaptopObject());
+
+            var restResponse = restClient.Post(restRequest);
+            
+
+            Assert.AreEqual(200, (int)restResponse.StatusCode);
+            
+
+            
+            
 
         }
     }

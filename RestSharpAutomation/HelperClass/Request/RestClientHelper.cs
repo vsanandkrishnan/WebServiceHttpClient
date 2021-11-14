@@ -29,7 +29,8 @@ namespace RestSharpAutomation.HelperClass.Request
         /// <param name="httpHeaders"></param>
         /// <param name="method"></param>
         /// <returns>Rest Request</returns>
-        private IRestRequest GetRestRequest(string url, Dictionary<string,string> headers,Method method)
+        private IRestRequest GetRestRequest(string url, Dictionary<string,string> headers,Method method,object body=null,
+            DataFormat dataFormat=DataFormat.None)
         {
             IRestRequest restRequest = new RestRequest()
             {
@@ -37,11 +38,20 @@ namespace RestSharpAutomation.HelperClass.Request
                 Method = method
             };
 
-            foreach(var key in headers.Keys)
+            if (headers != null)
             {
-                restRequest.AddHeader(key, headers[key]);
+                foreach (var key in headers.Keys)
+                {
+                    restRequest.AddHeader(key, headers[key]);
+                }
             }
 
+            if (body != null)
+            {
+                restRequest.RequestFormat = dataFormat;
+                restRequest.AddBody(body);
+            }
+        
             return restRequest;
         }
 
@@ -103,6 +113,41 @@ namespace RestSharpAutomation.HelperClass.Request
             IRestResponse<T> restResponse = SendRequest<T>(restRequest);
             return restResponse;
         }
+
+        /// <summary>
+        /// Perform POST request with type deserialization
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="headers"></param>
+        /// <param name="body"></param>
+        /// <param name="format"></param>
+        /// <returns>REST RESPONSE</returns>
+        public IRestResponse<T> PerformPostRequest<T>(string url, Dictionary<string,string> headers,
+            object body,DataFormat format) where T : new()
+        {
+            IRestRequest restRequest= GetRestRequest(url,headers,Method.POST,body,format);
+            IRestResponse<T> restResponse = SendRequest<T>(restRequest);
+            return restResponse;
+        }
+
+        /// <summary>
+        /// Perform POST request with type serialization
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="headers"></param>
+        /// <param name="body"></param>
+        /// <param name="format"></param>
+        /// <returns>REST RESPONSE</returns>
+        public IRestResponse PerformPostRequest(string url, Dictionary<string, string> headers,
+            object body, DataFormat format)
+        {
+            IRestRequest restRequest = GetRestRequest(url, headers, Method.POST, body, format);
+            IRestResponse restResponse = SendRequest(restRequest);
+            return restResponse;
+        }
+
+
 
     }
 }
