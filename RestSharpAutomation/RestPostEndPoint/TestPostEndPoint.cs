@@ -122,6 +122,30 @@ namespace RestSharpAutomation.RestPostEndPoint
             Assert.AreEqual(200, (int)restResponse.StatusCode);
         }
 
+        [TestMethod]
+        public void TestPostWithXmlWithObject()
+        {
+            int id = random.Next(1000);
+            IRestClient restClient = new RestClient();
+
+            IRestRequest restRequest = new RestRequest()
+            {
+                Resource = postUrl
+            };
+
+            restRequest.AddHeader("Content-Type", XmlMediaType);
+            restRequest.AddHeader("Accept", XmlMediaType);
+            restRequest.RequestFormat = DataFormat.Xml;
+            restRequest.XmlSerializer = new RestSharp.Serializers.DotNetXmlSerializer();
+            
+            restRequest.AddParameter("XmlBody", restRequest.XmlSerializer.Serialize(RequestCreation.GetLaptopObjectXml(id)), 
+                ParameterType.RequestBody);
+
+            IRestResponse<Laptop> restResponse = restClient.Post<Laptop>(restRequest);
+
+            Assert.AreEqual(200, (int)restResponse.StatusCode);
+        }
+
 
     }
 }

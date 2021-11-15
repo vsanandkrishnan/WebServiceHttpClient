@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebServiceAutomation.Model.JsonModel;
+using WebServiceAutomation.Model.XMLModel;
 
 namespace RestSharpAutomation.ObjectRequest
 {
@@ -16,7 +17,7 @@ namespace RestSharpAutomation.ObjectRequest
             laptop.BrandName = "Dell Inspirion";
             laptop.LaptopName = "Dell Latitude Inspirion";
 
-            Features features = new Features();
+            WebServiceAutomation.Model.JsonModel.Features features = new WebServiceAutomation.Model.JsonModel.Features();
 
             List<string> featureList = new List<string>()
             {
@@ -28,6 +29,28 @@ namespace RestSharpAutomation.ObjectRequest
             laptop.Features = features;
 
             laptop.Id = id;
+
+            return laptop;
+        }
+
+        public static Laptop GetLaptopObjectXml(int id)
+        {
+            Laptop laptop = new Laptop();
+            laptop.BrandName = "Dell Inspirion";
+            laptop.LaptopName = "Dell Latitude Inspirion";
+
+            WebServiceAutomation.Model.XMLModel.Features features = new WebServiceAutomation.Model.XMLModel.Features();
+
+            List<string> featureList = new List<string>()
+            {
+                ("Simple Feature one")
+            };
+
+            features.Feature = featureList;
+
+            laptop.Features = features;
+
+            laptop.Id = id.ToString();
 
             return laptop;
         }
