@@ -147,5 +147,25 @@ namespace RestSharpAutomation.RestPostEndPoint
         }
 
 
+        [TestMethod]
+        public void TestPostWithXmlWithObject_HelperClass()
+        {
+            int id = random.Next(1000);
+
+            Dictionary<string, string> headers = new Dictionary<string, string>()
+            {
+                {"Accept",XmlMediaType },
+                {"Content-Type",XmlMediaType }
+            };
+
+            RestClientHelper restHelper = new RestClientHelper();
+            IRestResponse<Laptop> restResponse=restHelper.PerformPostRequest<Laptop>(postUrl,headers,RequestCreation.GetLaptopObjectXml(id),DataFormat.Xml);
+            
+
+            Assert.AreEqual(200, (int)restResponse.StatusCode);
+            Assert.AreEqual(restResponse.Data.BrandName, "Dell Inspirion");
+        }
+
+
     }
 }

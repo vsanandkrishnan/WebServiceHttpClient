@@ -29,6 +29,7 @@ namespace RestSharpAutomation.HelperClass.Request
         /// <param name="httpHeaders"></param>
         /// <param name="method"></param>
         /// <returns>Rest Request</returns>
+        [Obsolete]
         private IRestRequest GetRestRequest(string url, Dictionary<string,string> headers,Method method,object body=null,
             DataFormat dataFormat=DataFormat.None)
         {
@@ -49,6 +50,19 @@ namespace RestSharpAutomation.HelperClass.Request
             if (body != null)
             {
                 restRequest.RequestFormat = dataFormat;
+                switch (dataFormat)
+                {
+                    case DataFormat.Json:
+                        restRequest.AddBody(body);
+                        break;
+
+                    case DataFormat.Xml:
+                        restRequest.XmlSerializer = new RestSharp.Serializers.DotNetXmlSerializer();
+                        restRequest.AddParameter("XmlBody", body.GetType().Equals(typeof(string)) ? body :
+                            restRequest.XmlSerializer.Serialize(body), ParameterType.RequestBody);
+                        break;
+
+                }
                 restRequest.AddBody(body);
             }
         
