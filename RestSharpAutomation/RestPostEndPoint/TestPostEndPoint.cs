@@ -1,12 +1,14 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
 using RestSharpAutomation.HelperClass.Request;
+using RestSharpAutomation.ObjectRequest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebServiceAutomation.Model.JsonModel;
+using WebServiceAutomation.Model.XMLModel;
 
 namespace RestSharpAutomation.RestPostEndPoint
 {
@@ -49,29 +51,10 @@ namespace RestSharpAutomation.RestPostEndPoint
 
         }
 
-        private ResponseV2Json GetLaptopObject()
-        {
-            ResponseV2Json laptop = new ResponseV2Json();
-            laptop.BrandName = "Dell Inspirion";
-            laptop.LaptopName = "Dell Latitude Inspirion";
 
-            Features features = new Features();
-
-            List<string> featureList = new List<string>()
-            {
-                ("Simple Feature one")
-            };
-
-            features.Feature = featureList;
-
-            laptop.Features = features;
-
-            laptop.Id = random.Next(1000);
-
-            return laptop;
-        }
 
         [TestMethod]
+        [Obsolete]
         public void TestPostWithModelObject()
         {
             var restClient = new RestClient();
@@ -83,7 +66,7 @@ namespace RestSharpAutomation.RestPostEndPoint
             restRequest.AddHeader("Content-Type", JsonMediaType);
             restRequest.AddHeader("Accept", JsonMediaType);
             restRequest.RequestFormat = DataFormat.Json;
-            restRequest.AddBody(GetLaptopObject());
+            restRequest.AddBody(RequestCreation.GetLaptopObject(random.Next(1000)));
 
             var restResponse = restClient.Post(restRequest);
             
@@ -102,13 +85,41 @@ namespace RestSharpAutomation.RestPostEndPoint
 
             RestClientHelper restClietHelper = new RestClientHelper();
 
-            var restData=restClietHelper.PerformPostRequest<List<ResponseV2Json>>(postUrl,headers,GetLaptopObject(),
+            var restData=restClietHelper.PerformPostRequest<List<ResponseV2Json>>(postUrl,headers, RequestCreation.GetLaptopObject(random.Next(1000)),
                 DataFormat.Json);
 
-            
-
-
             Assert.AreEqual(200, (int)restData.StatusCode);
+        }
+
+        [TestMethod]
+        public void TestPostWithXml()
+        {
+            int id = random.Next(1000);
+            string xmlData = "<Laptop>" +
+                                  "<BrandName>Alienware</BrandName>" +
+                           "<Features>" +
+                                       "<Feature>8th Generation Intel® Core™ i5-8300H</Feature>" +
+                                    "<Feature>Windows 10 Home 64-bit English</Feature>" +
+                                    "<Feature>NVIDIA® GeForce® GTX 1660 Ti 6GB GDDR6</Feature>" +
+                                    "<Feature>8GB, 2x4GB, DDR4, 2666MHz</Feature>" +
+                           "</Features>" +
+                              "<Id>" + id + "</Id>" +
+                              "<LaptopName>Alienware M17</LaptopName>" +
+                         "</Laptop>";
+            IRestClient restClient = new RestClient();
+
+            IRestRequest restRequest = new RestRequest()
+            {
+                Resource = postUrl
+            };
+
+            restRequest.AddHeader("Content-Type", XmlMediaType);
+            restRequest.AddHeader("Accept", XmlMediaType);
+            restRequest.AddParameter("XmlBody", xmlData, ParameterType.RequestBody);
+
+            IRestResponse<Laptop> restResponse = restClient.Post<Laptop>(restRequest);
+
+            Assert.AreEqual(200, (int)restResponse.StatusCode);
         }
 
 
