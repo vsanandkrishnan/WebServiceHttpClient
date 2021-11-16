@@ -5,8 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace RestSharpAutomation.HelperClass.Request
 {
+    [Obsolete]
     public class RestClientHelper
     {
 
@@ -157,6 +159,39 @@ namespace RestSharpAutomation.HelperClass.Request
             object body, DataFormat format)
         {
             IRestRequest restRequest = GetRestRequest(url, headers, Method.POST, body, format);
+            IRestResponse restResponse = SendRequest(restRequest);
+            return restResponse;
+        }
+
+        /// <summary>
+        /// Perform PUT request with type deserialization
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="headers"></param>
+        /// <param name="body"></param>
+        /// <param name="format"></param>
+        /// <returns>REST RESPONSE</returns>
+        public IRestResponse<T> PerformPutRequest<T>(string url, Dictionary<string, string> headers,
+            object body, DataFormat format) where T : new()
+        {
+            IRestRequest restRequest = GetRestRequest(url, headers, Method.PUT, body, format);
+            IRestResponse<T> restResponse = SendRequest<T>(restRequest);
+            return restResponse;
+        }
+
+        /// <summary>
+        /// Perform PUT request with type serialization
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="headers"></param>
+        /// <param name="body"></param>
+        /// <param name="format"></param>
+        /// <returns>REST RESPONSE</returns>
+        public IRestResponse PerformPutRequest(string url, Dictionary<string, string> headers,
+            object body, DataFormat format)
+        {
+            IRestRequest restRequest = GetRestRequest(url, headers, Method.PUT, body, format);
             IRestResponse restResponse = SendRequest(restRequest);
             return restResponse;
         }
