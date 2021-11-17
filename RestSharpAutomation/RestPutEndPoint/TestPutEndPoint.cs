@@ -122,25 +122,10 @@ namespace RestSharpAutomation.RestPutEndPoint
                   "<LaptopName>Alienware M17</LaptopName>" +
              "</Laptop>";
 
-            IRestClient restClient = new RestClient();
-            IRestRequest restRequest = new RestRequest()
-            {
-                Resource = putUrl
-            };
-
-            restRequest.AddHeader("Accept", XmlMediaType);
-            restRequest.AddHeader("Content-Type", XmlMediaType);
-            restRequest.RequestFormat = DataFormat.Xml;
-
-            restRequest.AddParameter("XmlBody", xmlData, ParameterType.RequestBody);
-
-            var restResponsePut = restClient.Put(restRequest);
+            var restResponsePut = restClientHelper.PerformPutRequest<Laptop>(putUrl, headers, xmlData, DataFormat.Xml);
             Assert.AreEqual(200, (int)restResponsePut.StatusCode);
 
-            var deserializer = new RestSharp.Deserializers.DotNetXmlDeserializer();
-            var restResponseDeserialized = deserializer.Deserialize<Laptop>(restResponsePut);
-
-            var featureUpdatedOne = restResponseDeserialized.Features.Feature;
+            var featureUpdatedOne = restResponsePut.Data.Features.Feature;
             Assert.IsTrue(featureUpdatedOne.Contains("1TB secondary Storage"),"The new feature was not updated in Xml file");
 
             headers = new Dictionary<string, string>()
@@ -150,8 +135,6 @@ namespace RestSharpAutomation.RestPutEndPoint
 
             var restResponseGet=restClientHelper.PerformGetRequest<Laptop>(getUrl+id, headers);
             Assert.AreEqual(200, (int)restResponseGet.StatusCode,$"{restResponseGet.StatusCode} is send out after the Get request");
-
-
 
         }
 

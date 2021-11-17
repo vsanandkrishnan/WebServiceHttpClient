@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="HelperClass\Request\RestClientHelper.cs" />
     <Compile Include="ObjectRequest\RequestCreation.cs" />
+    <Compile Include="RestDeleteEndPoint\TestDeleteEndPoint.cs" />
     <Compile Include="RestGetEndPoint\TestGetEndPoint.cs" />
     <Compile Include="RestPostEndPoint\TestPostEndPoint.cs" />
     <Compile Include="RestPutEndPoint\TestPutEndPoint.cs" />
