@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
+using RestSharp.Authenticators;
 using RestSharpAutomation.HelperClass.Request;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace RestSharpAutomation.RestGetEndPoint
     public class TestGetEndPoint
     {
         private string getUrl = @"http://localhost:8080/laptop-bag/webapi/api/all";
+        private string secureGetUrl = @"http://localhost:8080/laptop-bag/webapi/secure/all";
         private static string JsonMediaType = "application/json";
         private static string XmlMediaType = "application/xml";
 
@@ -179,6 +181,20 @@ namespace RestSharpAutomation.RestGetEndPoint
 
             Assert.AreEqual(200, (int)restResponse.StatusCode);
             Assert.IsNotNull(restResponse.Data.First().BrandName, "Content is not null or empty");
+        }
+
+        [TestMethod]
+        public void TestGetUsingSecureUrl()
+        {
+            IRestClient restClient = new RestClient();
+            restClient.Authenticator = new HttpBasicAuthenticator("admin", "welcome");
+            IRestRequest restRequest = new RestRequest()
+            {
+                Resource = secureGetUrl
+            };
+
+            var restResponse = restClient.Get(restRequest);
+            Assert.AreEqual(200, (int)restResponse.StatusCode, "Variable in the method");
         }
 
     }
