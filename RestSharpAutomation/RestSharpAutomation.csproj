@@ -64,6 +64,14 @@
     <Compile Include="DropBoxAPI\ResponseModels\SharingInfo.cs" />
     <Compile Include="DropBoxAPI\TestDropBoxAPI.cs" />
     <Compile Include="HelperClass\Request\RestClientHelper.cs" />
+    <Compile Include="JiraApi\JiraApiEndtoEndFlow.cs" />
+    <Compile Include="JiraApi\JiraRequestBody\CreateProjectPayload.cs" />
+    <Compile Include="JiraApi\JiraRequestBody\Login.cs" />
+    <Compile Include="JiraApi\JiraResponseBody\CraeteProjectResponse.cs" />
+    <Compile Include="JiraApi\JiraResponseBody\LoginInfo.cs" />
+    <Compile Include="JiraApi\JiraResponseBody\LoginResponse.cs" />
+    <Compile Include="JiraApi\JiraResponseBody\Session.cs" />
+    <Compile Include="JiraApi\TestJiraApi.cs" />
     <Compile Include="ObjectRequest\RequestCreation.cs" />
     <Compile Include="RestDeleteEndPoint\TestDeleteEndPoint.cs" />
     <Compile Include="RestGetEndPoint\TestGetEndPoint.cs" />
