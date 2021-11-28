@@ -73,6 +73,7 @@
     <Compile Include="JiraApi\JiraResponseBody\Session.cs" />
     <Compile Include="JiraApi\TestJiraApi.cs" />
     <Compile Include="ObjectRequest\RequestCreation.cs" />
+    <Compile Include="QueryParameter\QueryParameter.cs" />
     <Compile Include="RestDeleteEndPoint\TestDeleteEndPoint.cs" />
     <Compile Include="RestGetEndPoint\TestGetEndPoint.cs" />
     <Compile Include="RestPostEndPoint\TestPostEndPoint.cs" />
