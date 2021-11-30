@@ -18,8 +18,8 @@ namespace RestSharpAutomation.QueryParameter
         [TestMethod]
         public void TestQueryParameter()
         {
-            IRestClient restClient = new RestClient();
-            IRestRequest restRequest = new RestRequest()
+            var restClient = new RestClient();
+            var restRequest = new RestRequest()
             {
                 Resource = searchUrl
             };
